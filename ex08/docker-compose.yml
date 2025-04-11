@@ -1,0 +1,32 @@
+version: "3"
+services:
+  db:
+    build:
+      context: ./docker-test-db
+      dockerfile: Dockerfile
+    ports:
+      - 3307:3306
+    volumes:
+      - ./docker-test-db/store:/var/lib/mysql
+    networks:
+      - network
+  server:
+    build:
+      context: ./docker-test-server
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      # 도커 컴포즈시에는 내부 IP로 접근하기 때문에 Mysql 컨테이너 외부 ip를 3307로 지정하였어도 스프링부트 서버에서는 3306으로 명시해줘야 한다.
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/metadb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_DRIVER: com.mysql.cj.jdbc.Driver
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root1234
+    networks:
+      - network
+
+networks:
+  network:
