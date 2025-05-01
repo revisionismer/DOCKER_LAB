@@ -36,3 +36,8 @@ tasks.named('test') {
 	systemProperty 'file.encoding', 'UTF-8'
 	useJUnitPlatform()
 }
+
+// Tip : 이 설정이 들어가 있으면 jar 파일이 1개만 생성된다.
+jar {
+	enabled = false
+}

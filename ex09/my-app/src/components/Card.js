@@ -2,11 +2,16 @@ import React from 'react';
 
 import '../App.css';
 
-const Card = () => {
+const Card = (props) => {
+
+    let product = props.product;
+
+    console.log(product);
+
     return (
         <>
             <div className='product-card'>
-                상품1
+                {product.id} : {product.name}, {product.price}원
             </div>
         </>
     );
